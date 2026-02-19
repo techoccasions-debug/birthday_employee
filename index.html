@@ -1,546 +1,1124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Happy Birthday - Corporate Celebration</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --color-navy: #1c2b50;
-      --color-light-navy: #274172;
-      --color-gold-gradient: linear-gradient(45deg, #d4af37, #f0e68c);
-      --color-white: #f9fafb;
-      --color-gray-light: #f7f9fc;
-      --color-gray-dark: #34495e;
-      --shadow-primary: rgba(0, 0, 0, 0.14);
-    }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Happy Birthday — Yash Sharma | Sure Cargo Logistics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <style>
+        :root {
+            --ink: #0a0a0f;
+            --ink-2: #1a1a2e;
+            --ink-3: #2d2d44;
+            --paper: #f5f3ef;
+            --paper-2: #eceae4;
+            --gold: #c9a84c;
+            --gold-2: #e8c96b;
+            --gold-3: #f0d890;
+            --crimson: #8b1a2a;
+            --crimson-2: #b52233;
+            --slate: #4a4a6a;
+            --mist: #8a8aaa;
+            --white: #ffffff;
+            --line: rgba(201,168,76,0.25);
+            --card-bg: rgba(255,255,255,0.06);
+            --card-border: rgba(201,168,76,0.2);
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(45deg, var(--color-navy), var(--color-light-navy));
-      color: var(--color-white);
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    h1, h2, h3 {
-      font-family: 'Merriweather', serif;
-      font-weight: 700;
-      letter-spacing: -0.015em;
-    }
+        ::selection { background: var(--gold); color: var(--ink); }
 
-    /* Container */
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 1em 2em;
-    }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--ink);
+            color: var(--white);
+            overflow-x: hidden;
+            cursor: none;
+        }
 
-    /* Hero Section */
-    .hero {
-      min-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      position: relative;
-      padding: 2rem 1rem;
-      overflow: hidden;
-    }
+        /* ── CUSTOM CURSOR ─────────────────────────────────── */
+        .cursor { position: fixed; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            transform: translate(-50%,-50%);
+            transition: transform 0.1s ease;
+        }
+        .cursor-ring {
+            width: 36px; height: 36px;
+            border: 1.5px solid rgba(201,168,76,0.6);
+            border-radius: 50%;
+            transform: translate(-50%,-50%);
+            transition: all 0.15s ease;
+        }
 
-    /* Premium Ambient Background - Multiple Floating Orbs */
-    .ambient-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
+        /* ── LOADER ────────────────────────────────────────── */
+        #loader {
+            position: fixed; inset: 0; z-index: 9998;
+            background: var(--ink);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 2rem;
+        }
+        .loader-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem; font-weight: 600;
+            letter-spacing: 0.3em; text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0;
+        }
+        .loader-bar-wrap {
+            width: 200px; height: 1px;
+            background: rgba(201,168,76,0.2);
+            overflow: hidden;
+        }
+        .loader-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-2));
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+        }
 
-    .ambient-orb {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.4), rgba(212, 175, 55, 0.1), transparent);
-      animation: ambientFloat linear infinite;
-    }
+        /* ── CANVAS PARTICLES ─────────────────────────────── */
+        #particles {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 1;
+        }
 
-    .orb-1 {
-      width: 120px;
-      height: 120px;
-      top: 10%;
-      right: 10%;
-      animation-duration: 20s;
-    }
+        /* ── FULL-BLEED VIDEO ─────────────────────────────── */
+        .video-section {
+            position: relative;
+            width: 100%; height: 100vh;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .video-section video {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        .video-veil {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(10,10,15,0.55) 0%,
+                rgba(10,10,15,0.75) 60%,
+                rgba(10,10,15,1) 100%
+            );
+        }
+        .video-content {
+            position: relative; z-index: 5;
+            text-align: center; padding: 2rem;
+            opacity: 0; transform: translateY(40px);
+        }
+        .tagline-pill {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(201,168,76,0.12);
+            border: 1px solid rgba(201,168,76,0.35);
+            border-radius: 999px;
+            padding: 0.4rem 1.25rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem; font-weight: 500;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--gold-2);
+            margin-bottom: 2rem;
+        }
+        .tagline-pill span { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; }
+        .hero-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+        .hero-headline em {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--gold), var(--gold-2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            font-size: 1rem; font-weight: 300;
+            color: var(--mist); letter-spacing: 0.04em;
+            margin-bottom: 3rem;
+        }
+        .scroll-cue {
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            color: var(--mist); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+        }
+        .scroll-cue-line {
+            width: 1px; height: 60px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollLine 1.8s ease-in-out infinite;
+        }
+        @keyframes scrollLine {
+            0%,100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.4; }
+        }
 
-    .orb-2 {
-      width: 80px;
-      height: 80px;
-      bottom: 20%;
-      left: 15%;
-      animation-duration: 25s;
-      animation-direction: reverse;
-    }
+        /* ── LAYOUT ────────────────────────────────────────── */
+        .main-content { position: relative; z-index: 10; }
 
-    .orb-3 {
-      width: 200px;
-      height: 200px;
-      top: 60%;
-      right: 5%;
-      opacity: 0.3;
-      animation-duration: 30s;
-    }
+        /* Gold divider */
+        .divider {
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold) 40%, var(--gold-2) 60%, transparent);
+            opacity: 0.35;
+        }
 
-    @keyframes ambientFloat {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(30px, -30px) rotate(120deg); }
-      66% { transform: translate(-20px, 20px) rotate(240deg); }
-      100% { transform: translate(0, 0) rotate(360deg); }
-    }
+        /* Section wrapper */
+        .section { padding: 7rem 0; }
 
-    /* Subtle Sparkle Effect */
-    .sparkle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--color-gold-gradient);
-      border-radius: 50%;
-      animation: sparkleTwinkle 3s ease-in-out infinite;
-    }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 3rem; }
 
-    @keyframes sparkleTwinkle {
-      0%, 100% { opacity: 0; transform: scale(0); }
-      50% { opacity: 1; transform: scale(1); }
-    }
+        /* ── PROFILE STRIP ─────────────────────────────────── */
+        .profile-strip {
+            display: grid;
+            grid-template-columns: 440px 1fr;
+            gap: 6rem;
+            align-items: center;
+            padding: 6rem 0;
+        }
 
-    .employee-photo {
-      width: 185px;
-      height: 185px;
-      border-radius: 50%;
-      padding: 5px;
-      background: var(--color-white);
-      box-shadow:
-        0 10px 30px var(--shadow-primary),
-        inset 0 0 0 5px var(--color-gold-gradient);
-      margin-bottom: 2rem;
-      position: relative;
-      z-index: 10;
-      overflow: hidden;
-      transition: transform 0.3s ease;
-    }
+        .profile-img-wrap {
+            position: relative;
+            opacity: 0; transform: translateX(-40px);
+        }
+        .profile-img-frame {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .profile-img-frame img {
+            width: 100%; height: 580px;
+            object-fit: cover; display: block;
+            filter: grayscale(20%);
+            transition: filter 0.6s ease;
+        }
+        .profile-img-frame:hover img { filter: grayscale(0%); }
 
-    .employee-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      display: block;
-    }
+        /* Corner accents */
+        .corner { position: absolute; width: 28px; height: 28px; }
+        .corner-tl { top: -8px; left: -8px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+        .corner-tr { top: -8px; right: -8px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+        .corner-bl { bottom: -8px; left: -8px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+        .corner-br { bottom: -8px; right: -8px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
 
-    .employee-photo:hover {
-      transform: scale(1.06);
-      box-shadow:
-        0 14px 40px var(--shadow-primary),
-        inset 0 0 10px 8px var(--color-gold-gradient);
-    }
+        /* Image overlay badge */
+        .img-badge {
+            position: absolute; bottom: 1.5rem; left: 1.5rem;
+            background: rgba(10,10,15,0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 0.9rem 1.25rem;
+        }
+        .img-badge-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 0.2rem;
+        }
+        .img-badge-value {
+            font-size: 0.95rem; font-weight: 600; color: var(--white);
+        }
 
-    h1.employee-name {
-      font-size: 3.6rem;
-      background: var(--color-gold-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-      z-index: 10;
-      position: relative;
-    }
+        .profile-text { opacity: 0; transform: translateX(40px); }
 
-    p.role {
-      font-weight: 600;
-      font-size: 1.4rem;
-      margin-bottom: 1.7rem;
-      color: #f0e68c;
-      z-index: 10;
-      position: relative;
-    }
+        .eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 1.25rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .eyebrow::before {
+            content: ''; display: block;
+            width: 30px; height: 1px; background: var(--gold);
+        }
 
-    p.headline {
-      font-size: 2.7rem;
-      color: var(--color-white);
-      font-weight: 300;
-      letter-spacing: 2px;
-      margin-bottom: 0;
-      text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
-      z-index: 10;
-      position: relative;
-    }
+        .profile-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 4vw, 3.75rem);
+            font-weight: 700; line-height: 1.1;
+            color: var(--white); margin-bottom: 0.5rem;
+        }
+        .profile-role {
+            font-size: 1rem; font-weight: 400;
+            color: var(--mist); margin-bottom: 2.5rem;
+            letter-spacing: 0.03em;
+        }
 
-    /* Fade Up Animation Classes */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.9s ease;
-    }
+        .profile-message {
+            font-size: 1.05rem; font-weight: 300;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.85;
+            border-left: 2px solid var(--gold);
+            padding-left: 1.5rem;
+            margin-bottom: 3rem;
+        }
 
-    .fade-up.appear {
-      opacity: 1;
-      transform: translateY(0);
-    }
+        /* Stats row */
+        .stats-row {
+            display: flex; gap: 2.5rem; margin-bottom: 3rem;
+        }
+        .stat { border-top: 1px solid var(--line); padding-top: 1rem; }
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; font-weight: 700; color: var(--gold);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.75rem; color: var(--mist);
+            letter-spacing: 0.06em; text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
 
-    /* Message Section */
-    .message-section {
-      max-width: 700px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(15px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      border-radius: 18px;
-      margin: 3rem auto;
-      padding: 2.5rem 3rem;
-      color: var(--color-white);
-      font-size: 1.3rem;
-      line-height: 1.8;
-      font-weight: 400;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-sizing: border-box;
-    }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            padding: 0.9rem 2.25rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-2));
+            color: var(--ink); border: none;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem; font-weight: 600;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            cursor: none;
+            transition: all 0.3s ease;
+            position: relative; overflow: hidden;
+        }
+        .cta-btn::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--gold-2), var(--gold-3));
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .cta-btn:hover::before { opacity: 1; }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.3); }
+        .cta-btn span, .cta-btn i { position: relative; z-index: 1; }
 
-    .employee-photo:hover {
-  transform: scale(1.06);
-  box-shadow:
-    0 14px 40px rgba(212, 175, 55, 0.4),
-    0 0 25px rgba(212, 175, 55, 0.9),
-    inset 0 0 10px 8px var(--color-gold-gradient);
-}
+        /* ── COMPANY BANNER ────────────────────────────────── */
+        .company-banner {
+            padding: 3.5rem 0;
+            background: linear-gradient(135deg, rgba(10,10,15,0.6) 0%, rgba(26,26,46,0.4) 100%);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            opacity: 0; transform: translateY(30px);
+        }
+        .company-banner-inner {
+            display: flex; align-items: center;
+            justify-content: space-between; gap: 3rem;
+        }
+        .co-logo-area {
+            display: flex; align-items: center; gap: 1.25rem;
+        }
+        .co-logo-img {
+            height: 52px; width: auto;
+           
+            opacity: 0.9;
+        }
+        .co-name-stack {}
+        .co-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; font-weight: 600; color: var(--white);
+        }
+        .co-tagline {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--gold); margin-top: 0.15rem;
+        }
+        .co-divider { width: 1px; height: 48px; background: var(--line); flex-shrink: 0; }
+        .co-message {
+            flex: 1;
+            font-size: 0.9rem; font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+        }
+        .co-badge {
+            flex-shrink: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold);
+            text-align: center;
+        }
+        .co-badge-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem; font-weight: 700; color: var(--gold); line-height: 1;
+        }
+        .co-badge-text { font-size: 0.55rem; letter-spacing: 0.1em; color: var(--mist); text-transform: uppercase; }
 
-    /* Achievements Section */
-    .achievements-section {
-      background: var(--color-gray-light);
-      padding: 3rem 2rem;
-      border-radius: 18px;
-      max-width: 900px;
-      margin: 2rem auto 4rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2.5rem;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.05);
-    }
+        /* ── SCRATCH SECTION ───────────────────────────────── */
+        .scratch-section {
+            padding: 8rem 0;
+            opacity: 0; transform: translateY(50px);
+        }
+        .section-header { text-align: center; margin-bottom: 5rem; }
+        .section-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 1rem;
+            display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+        }
+        .section-num::before, .section-num::after {
+            content: ''; display: block; width: 24px; height: 1px; background: var(--gold);
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700; color: var(--white);
+            line-height: 1.15; margin-bottom: 1rem;
+        }
+        .section-sub { font-size: 1rem; color: var(--mist); font-weight: 300; }
 
-    .achievement-card {
-      background: var(--color-white);
-      border-radius: 14px;
-      padding: 2rem 1.8rem;
-      text-align: center;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-      filter: drop-shadow(0 6px 6px rgba(212, 175, 55, 0.2));
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: default;
-    }
+        /* Scratch card */
+        .scratch-layout {
+            display: grid;
+            grid-template-columns: 1fr 480px 1fr;
+            align-items: center; gap: 4rem;
+        }
+        .scratch-aside {
+            display: flex; flex-direction: column; gap: 2rem;
+        }
+        .scratch-aside-item {
+            display: flex; align-items: flex-start; gap: 1rem;
+            opacity: 0; transform: translateX(-20px);
+        }
+        .scratch-aside-icon {
+            width: 40px; height: 40px; border-radius: 4px;
+            background: rgba(201,168,76,0.1);
+            border: 1px solid rgba(201,168,76,0.25);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold); font-size: 0.85rem; flex-shrink: 0;
+        }
+        .scratch-aside-title { font-size: 0.875rem; font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
+        .scratch-aside-text { font-size: 0.8rem; color: var(--mist); line-height: 1.5; }
 
-    .achievement-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 18px 50px rgba(212, 175, 55, 0.45);
-    }
+        .scratch-aside-right .scratch-aside-item { transform: translateX(20px); }
 
-    .achievement-icon {
-      font-size: 3rem;
-      background: linear-gradient(45deg, #d4af37, #f0e68c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-block;
-      margin-bottom: 0.5rem;
-    }
+        .scratch-card-outer {
+            position: relative;
+        }
+        .scratch-card-glow {
+            position: absolute; inset: -20px;
+            background: radial-gradient(ellipse, rgba(201,168,76,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .scratch-card-wrap {
+            position: relative; width: 100%; height: 360px;
+            border-radius: 8px; overflow: hidden;
+            border: 1px solid rgba(201,168,76,0.35);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.1);
+        }
+        .scratch-card-wrap::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+            pointer-events: none; z-index: 3;
+        }
+        .scratch-revealed {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            padding: 2.5rem; text-align: center; gap: 1rem;
+        }
+        .scratch-revealed img {
+            max-width: 100%; max-height: 200px;
+            border-radius: 6px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .scratch-revealed-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; font-weight: 600;
+            color: var(--gold-2);
+        }
+        #scratchCanvas {
+            position: absolute; inset: 0; z-index: 2;
+            cursor: none; touch-action: none;
+        }
 
-    .achievement-title {
-      font-family: 'Merriweather', serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-      color: var(--color-navy);
-    }
+        /* Progress */
+        .scratch-progress-wrap {
+            margin-top: 1.5rem;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .scratch-progress-bar {
+            flex: 1; height: 2px;
+            background: rgba(201,168,76,0.15);
+        }
+        .scratch-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-2));
+            width: 0%; transition: width 0.15s ease;
+            box-shadow: 0 0 8px var(--gold);
+        }
+        .scratch-progress-pct {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem; color: var(--gold); min-width: 3rem; text-align: right;
+        }
+        .scratch-hint {
+            text-align: center; margin-top: 1rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--mist);
+        }
 
-    .achievement-desc {
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--color-gray-dark);
-      line-height: 1.5;
-    }
+        /* ── COMPANY MESSAGE ───────────────────────────────── */
+        .msg-section {
+            padding: 8rem 0;
+            opacity: 0; transform: translateY(50px);
+        }
+        .msg-grid {
+            display: grid;
+            grid-template-columns: 1fr 2px 1fr;
+            gap: 5rem; align-items: stretch;
+        }
+        .msg-divider-vert { background: var(--line); }
 
-    /* Team Wishes Section */
-    .wishes-section {
-      max-width: 900px;
-      margin: 0 auto 6rem;
-      padding: 0 1.5rem;
-      text-align: center;
-    }
+        .msg-col {}
+        .msg-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .msg-label i { font-size: 0.7rem; }
+        .msg-text {
+            font-size: 1rem; font-weight: 300;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.9; margin-bottom: 2rem;
+        }
+        .msg-text p { margin-bottom: 1.2rem; }
+        .msg-sig {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem; font-weight: 600; color: var(--white);
+        }
+        .msg-sig small {
+            display: block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.75rem; font-weight: 400; color: var(--mist);
+            margin-top: 0.25rem;
+        }
 
-    .wishes-header {
-      font-family: 'Merriweather', serif;
-      font-weight: 700;
-      font-size: 2.3rem;
-      background: var(--color-gold-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 3rem;
-    }
+        /* Wishes list */
+        .wishes-list { display: flex; flex-direction: column; gap: 1.5rem; }
+        .wish-item {
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(201,168,76,0.12);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative; overflow: hidden;
+            opacity: 0; transform: translateX(20px);
+        }
+        .wish-item::before {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: linear-gradient(to bottom, var(--gold), var(--gold-2));
+            transform: scaleY(0); transform-origin: top;
+            transition: transform 0.3s ease;
+        }
+        .wish-item:hover::before { transform: scaleY(1); }
+        .wish-item:hover { background: rgba(255,255,255,0.05); }
+        .wish-sender {
+            font-size: 0.8rem; font-weight: 600; color: var(--gold);
+            margin-bottom: 0.4rem;
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.05em;
+        }
+        .wish-text {
+            font-size: 0.875rem; color: rgba(255,255,255,0.6);
+            line-height: 1.65;
+        }
 
-    .wishes-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 2rem;
-    }
+        /* ── FOOTER ────────────────────────────────────────── */
+        footer {
+            padding: 4rem 0 3rem;
+            border-top: 1px solid var(--line);
+            opacity: 0; transform: translateY(20px);
+        }
+        .footer-inner {
+            display: flex; align-items: center;
+            justify-content: space-between; gap: 2rem;
+        }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem; font-weight: 600; color: var(--white);
+        }
+        .footer-brand small {
+            display: block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.7rem; font-weight: 300; color: var(--mist);
+            letter-spacing: 0.04em; margin-top: 0.2rem;
+        }
+        .footer-copy {
+            font-size: 0.75rem; color: var(--mist); text-align: right;
+        }
+        .footer-sep { width: 1px; height: 30px; background: var(--line); }
 
-    .wish-card {
-      background: rgba(255,255,255,0.18);
-      backdrop-filter: blur(20px);
-      border-radius: 16px;
-      padding: 1.8rem 2rem;
-      box-shadow: 0 6px 30px rgba(0,0,0,0.1);
-      transition: transform 0.25s ease;
-      cursor: default;
-    }
+        /* ── CELEBRATION ───────────────────────────────────── */
+        #celebration-overlay {
+            position: fixed; inset: 0; z-index: 9990;
+            pointer-events: none; opacity: 0; visibility: hidden;
+        }
 
-    .wish-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 45px rgba(212, 175, 55, 0.45);
-    }
-
-    .wish-author {
-      color: #f0e68c;
-      font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 0.3rem;
-      letter-spacing: 0.02em;
-      user-select: none;
-    }
-
-    .wish-role {
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      font-size: 0.825rem;
-      color: #e5d372dd;
-      margin-bottom: 1rem;
-      font-style: italic;
-      user-select: none;
-    }
-
-    .wish-text {
-      font-style: italic;
-      color: var(--color-white);
-      font-size: 1rem;
-      line-height: 1.6;
-      user-select: none;
-    }
-
-    /* Values Section */
-    .values-section {
-      background: var(--color-navy);
-      padding: 3rem 2rem;
-      border-radius: 18px;
-      max-width: 800px;
-      margin: 0 auto 5rem;
-      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-      color: var(--color-gold-gradient);
-      font-family: 'Merriweather', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      font-style: italic;
-      text-align: center;
-      user-select: none;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 1.8rem 2rem;
-      color: #c7c7c7;
-      font-size: 0.85rem;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      background: var(--color-navy);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      user-select: none;
-    }
-
-    footer .footer-logo {
-      font-family: 'Merriweather', serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      background: var(--color-gold-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.6rem;
-      user-select: none;
-      letter-spacing: 0.1em;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      h1.employee-name {
-        font-size: 2.8rem;
-      }
-
-      p.role {
-        font-size: 1.1rem;
-      }
-
-      p.headline {
-        font-size: 1.9rem;
-      }
-
-      .message-section {
-        padding: 1.5rem 1.5rem;
-        font-size: 1rem;
-      }
-
-      .achievements-section {
-        grid-template-columns: 1fr;
-        margin-bottom: 3rem;
-      }
-
-      .wishes-container {
-        grid-template-columns: 1fr;
-      }
-
-      .values-section {
-        font-size: 1.1rem;
-        padding: 2rem 1rem;
-      }
-    }
-   
-
-
-  </style>
+        /* ── RESPONSIVE ────────────────────────────────────── */
+        @media (max-width: 1024px) {
+            .profile-strip { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            .profile-img-frame img { height: 400px; }
+            .scratch-layout { grid-template-columns: 1fr; }
+            .scratch-aside { flex-direction: row; flex-wrap: wrap; }
+            .scratch-aside-right .scratch-aside-item { transform: none; }
+            .scratch-aside-item { transform: none !important; }
+            .msg-grid { grid-template-columns: 1fr; }
+            .msg-divider-vert { display: none; }
+            .company-banner-inner { flex-direction: column; text-align: center; }
+            .eyebrow { justify-content: center; }
+            .stats-row { justify-content: center; }
+            .cta-btn { align-self: center; }
+            .profile-message { text-align: left; }
+        }
+        @media (max-width: 640px) {
+            .container { padding: 0 1.25rem; }
+            .hero-headline { font-size: 2.8rem; }
+            .scratch-aside { display: none; }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .footer-sep { display: none; }
+            .footer-copy { text-align: center; }
+        }
+    </style>
 </head>
 <body>
- 
 
-  <section class="hero" aria-label="Employee Birthday Celebration">
-    <div class="ambient-bg">
-      <div class="ambient-orb orb-1"></div>
-      <div class="ambient-orb orb-2"></div>
-      <div class="ambient-orb orb-3"></div>
-      <canvas id="particles"></canvas>
+<!-- Custom Cursor -->
+<div class="cursor" id="cursorDot"><div class="cursor-dot"></div></div>
+<div class="cursor" id="cursorRing"><div class="cursor-ring"></div></div>
+
+<!-- Loader -->
+<div id="loader">
+    <div class="loader-logo">Sure Cargo Logistics</div>
+    <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
+</div>
+
+<!-- Particles -->
+<canvas id="particles"></canvas>
+
+<!-- Celebration -->
+<div id="celebration-overlay"></div>
+
+<!-- ── VIDEO HERO ───────────────────────────────── -->
+<section class="video-section">
+    <video autoplay muted loop playsinline>
+        <source src="bg-video1.mp4" type="video/mp4">
+    </video>
+    <div class="video-veil"></div>
+    <div class="video-content" id="videoContent">
+        <div class="tagline-pill"><span></span> Annual Recognition · 2026 <span></span></div>
+        <h1 class="hero-headline">Happy<br><em>Birthday</em></h1>
+        <p class="hero-subtitle">Celebrating Excellence at Sure Cargo Logistics</p>
+        <div class="scroll-cue">
+            <div class="scroll-cue-line"></div>
+            <span>Scroll to explore</span>
+        </div>
     </div>
+</section>
+
+<!-- ── MAIN CONTENT ─────────────────────────────── -->
+<div class="main-content">
+
+    <!-- PROFILE STRIP -->
     <div class="container">
-      <div class="employee-photo" aria-label="Employee photo">
-        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" alt="Employee Vivek Sharma"/>
-      </div>
-      <h1 class="employee-name" id="employeeName">Vivek Sharma</h1>
-      <p class="role" id="employeeRole">Senior Marketing Manager • Marketing Department</p>
-      <h1 id="typewriter"></h1>
-
-      <p class="headline">Happy Birthday!</p>
+        <div class="profile-strip">
+            <!-- Photo -->
+            <div class="profile-img-wrap" id="profileImg">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                <div class="profile-img-frame">
+                    <img src="https://img.freepik.com/premium-photo/corporate-boy-smiling-office-background-portrait-image_526502-4774.jpg"
+                         alt="Yash Sharma">
+                    <div class="img-badge">
+                        <div class="img-badge-label">Position</div>
+                        <div class="img-badge-value">Logistics Coordinator</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Text -->
+            <div class="profile-text" id="profileText">
+                <div class="eyebrow">Birthday Honoree · 2026</div>
+                <h2 class="profile-name">Yash<br>Sharma</h2>
+                <p class="profile-role">Logistics Coordinator — Sure Cargo Logistics</p>
+                <p class="profile-message">
+                    Wishing you a year filled with smooth deliveries, successful shipments,
+                    and continued excellence. Your professionalism and commitment to operational
+                    precision are the backbone of everything we achieve together.
+                    Today, we celebrate you.
+                </p>
+                <div class="stats-row">
+                    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Miles Coordinated</div></div>
+                    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Dedication</div></div>
+                    <div class="stat"><div class="stat-num">★</div><div class="stat-label">Team Player</div></div>
+                </div>
+                <button class="cta-btn" id="revealBtn">
+                    <i class="fas fa-gift"></i>
+                    <span>Claim Birthday Reward</span>
+                </button>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <section class="message-section fade-up" aria-label="Birthday message from company">
-    <div class="container">
-      <p>Today, we celebrate not just your birthday, but the incredible contributions you bring to our team every single day. Your dedication, creativity, and positive energy have left a lasting impact on our organization and the people around you. Thank you for being an essential part of our success.</p>
-      <br>
-      <p><strong>Here's to another year of growth, achievement, and shared victories!</strong></p>
+    <div class="divider"></div>
+
+    <!-- COMPANY BANNER -->
+    <div class="company-banner" id="companyBanner">
+        <div class="container">
+            <div class="company-banner-inner">
+                <div class="co-logo-area">
+                    <img src="logo.png" alt="Sure Cargo Logo" class="co-logo-img"
+                         onerror="this.style.display='none'">
+                    <div class="co-name-stack">
+                        <div class="co-name">Sure Cargo Logistics</div>
+                        <div class="co-tagline">Delivering Milestones with Excellence</div>
+                    </div>
+                </div>
+                <div class="co-divider"></div>
+                <p class="co-message">
+                    Our people are our greatest strength. Every milestone we celebrate
+                    reflects the dedication of individuals who drive our success forward.
+                </p>
+                <div class="co-badge">
+                    <div class="co-badge-num">🎂</div>
+                    <div class="co-badge-text">Special Day</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <section class="achievements-section fade-up" aria-label="Employee achievements highlights">
-    <div class="container">
-      <div class="achievement-card" role="group" aria-labelledby="yearsLabel">
-        <div class="achievement-icon" aria-hidden="true">🏢</div>
-        <h3 id="yearsLabel" class="achievement-title">5 Years Strong</h3>
-        <p class="achievement-desc">Half a decade of dedicated service and memorable milestones with us.</p>
-      </div>
-      <div class="achievement-card" role="group" aria-labelledby="contributionLabel">
-        <div class="achievement-icon" aria-hidden="true">🚀</div>
-        <h3 id="contributionLabel" class="achievement-title">Q4 Campaign Lead</h3>
-        <p class="achievement-desc">Successfully spearheaded our award-winning Q4 digital initiative.</p>
-      </div>
-      <div class="achievement-card" role="group" aria-labelledby="leadershipLabel">
-        <div class="achievement-icon" aria-hidden="true">⭐</div>
-        <h3 id="leadershipLabel" class="achievement-title">Team Leadership</h3>
-        <p class="achievement-desc">Mentored 8 junior team members with remarkable growth outcomes.</p>
-      </div>
-    </div>
-  </section>
+    <div class="divider"></div>
 
-  <section class="wishes-section fade-up" aria-label="Team birthday wishes">
-    <div class="container">
-      <h2 class="wishes-header">Messages from Your Team</h2>
-      <div class="wishes-container">
-        <article class="wish-card" tabindex="0">
-          <p class="wish-author">Michael Chen <span class="wish-role">Senior Developer</span></p>
-          <p class="wish-text">"Your collaborative spirit makes every project better. Wishing you an amazing birthday filled with happiness and celebration!"</p>
-        </article>
-        <article class="wish-card" tabindex="0">
-          <p class="wish-author">Emma Rodriguez <span class="wish-role">Product Manager</span></p>
-          <p class="wish-text">"It's been a privilege working alongside you. Your insights and dedication are truly inspiring. Happy Birthday!"</p>
-        </article>
-        <article class="wish-card" tabindex="0">
-          <p class="wish-author">James Patterson <span class="wish-role">Account Executive</span></p>
-          <p class="wish-text">"Another year older, another year wiser! Can't wait to see what amazing things you'll accomplish this year. Cheers!"</p>
-        </article>
-        <article class="wish-card" tabindex="0">
-          <p class="wish-author">Lisa Thompson <span class="wish-role">HR Manager</span></p>
-          <p class="wish-text">"Your positive attitude and hard work set a wonderful example for everyone. Wishing you joy, health, and continued success!"</p>
-        </article>
-      </div>
-    </div>
-  </section>
+    <!-- SCRATCH CARD -->
+    <section class="scratch-section" id="scratchSection">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num">02 — Exclusive Gift</div>
+                <h2 class="section-title">Your Birthday<br><em style="font-style:italic; background: linear-gradient(135deg,var(--gold),var(--gold-2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Reward Awaits</em></h2>
+                <p class="section-sub">Scratch to unveil your personal birthday gift from the team</p>
+            </div>
 
-  <section class="values-section fade-up" aria-label="Company values appreciation">
-    <p>We appreciate your <strong>dedication</strong>, <strong>passion</strong>, and <strong>contribution</strong> to our culture.</p>
-  </section>
+            <div class="scratch-layout">
+                <!-- Left aside -->
+                <div class="scratch-aside scratch-aside-left">
+                    <div class="scratch-aside-item" id="asi1">
+                        <div class="scratch-aside-icon"><i class="fas fa-award"></i></div>
+                        <div>
+                            <div class="scratch-aside-title">Recognition</div>
+                            <div class="scratch-aside-text">A token of appreciation from the entire Sure Cargo family.</div>
+                        </div>
+                    </div>
+                    <div class="scratch-aside-item" id="asi2">
+                        <div class="scratch-aside-icon"><i class="fas fa-star"></i></div>
+                        <div>
+                            <div class="scratch-aside-title">Excellence</div>
+                            <div class="scratch-aside-text">Celebrating your outstanding contributions this year.</div>
+                        </div>
+                    </div>
+                    <div class="scratch-aside-item" id="asi3">
+                        <div class="scratch-aside-icon"><i class="fas fa-handshake"></i></div>
+                        <div>
+                            <div class="scratch-aside-title">Gratitude</div>
+                            <div class="scratch-aside-text">Thank you for going above and beyond every single day.</div>
+                        </div>
+                    </div>
+                </div>
 
-  <footer>
-    <div class="footer-logo" aria-label="Company logo">✦ CMA CGM ✦</div>
-    <p>Created by HR for a special day.</p>
-  </footer>
+                <!-- Scratch Card -->
+                <div class="scratch-card-outer">
+                    <div class="scratch-card-glow"></div>
+                    <div class="scratch-card-wrap" id="scratchCard">
+                        <div class="scratch-revealed">
+                            <img src="gift.jpg" alt="Birthday Gift"
+                                onerror="this.outerHTML='<div style=\'width:180px;height:100px;background:linear-gradient(135deg,#c9a84c,#e8c96b);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:3rem;\'>🎁</div>'">
+                            <div class="scratch-revealed-text">Congratulations, Yash!<br>Your reward has been unlocked.</div>
+                        </div>
+                        <canvas id="scratchCanvas"></canvas>
+                    </div>
+                    <div class="scratch-progress-wrap">
+                        <div class="scratch-progress-bar">
+                            <div class="scratch-progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="scratch-progress-pct" id="progressPct">0%</div>
+                    </div>
+                    <div class="scratch-hint" id="scratchHint">Drag across the surface to reveal</div>
+                </div>
 
-  <script>
-    const elements = document.querySelectorAll('.fade-up');
+                <!-- Right aside -->
+                <div class="scratch-aside scratch-aside-right">
+                    <div class="scratch-aside-item" id="asi4">
+                        <div class="scratch-aside-icon"><i class="fas fa-truck"></i></div>
+                        <div>
+                            <div class="scratch-aside-title">Your Journey</div>
+                            <div class="scratch-aside-text">Every great delivery starts with a great team member like you.</div>
+                        </div>
+                    </div>
+                    <div class="scratch-aside-item" id="asi5">
+                        <div class="scratch-aside-icon"><i class="fas fa-chart-line"></i></div>
+                        <div>
+                            <div class="scratch-aside-title">Growth</div>
+                            <div class="scratch-aside-text">Here's to continued success and new milestones ahead.</div>
+                        </div>
+                    </div>
+                    <div class="scratch-aside-item" id="asi6">
+                        <div class="scratch-aside-icon"><i class="fas fa-heart"></i></div>
+                        <div>
+                            <div class="scratch-aside-title">From All of Us</div>
+                            <div class="scratch-aside-text">With warmth and best wishes on your special day.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('appear');
-        }
-      });
-    }, { threshold: 0.2 });
+    <div class="divider"></div>
 
-    elements.forEach(el => observer.observe(el));
-    const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+    <!-- COMPANY MESSAGE + WISHES -->
+    <section class="msg-section" id="msgSection">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num">03 — From the Team</div>
+                <h2 class="section-title">Words from<br><em style="font-style:italic; background: linear-gradient(135deg,var(--gold),var(--gold-2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Sure Cargo</em></h2>
+            </div>
+            <div class="msg-grid">
+                <!-- Company message -->
+                <div class="msg-col">
+                    <div class="msg-label"><i class="fas fa-building"></i> Management Message</div>
+                    <div class="msg-text">
+                        <p>On behalf of the entire organization, we extend our warmest birthday wishes to you. Your dedication, professionalism, and commitment to excellence play a vital role in driving our operational success.</p>
+                        <p>At Sure Cargo Logistics, we believe our people are our greatest strength. Your contribution to ensuring seamless coordination and timely deliveries reflects the values we stand for as a company.</p>
+                        <p>May this year bring you continued growth, new achievements, and personal fulfillment. We are proud to have you as part of our team and look forward to celebrating many more milestones together.</p>
+                    </div>
+                    <div class="msg-sig">— Management Team<small>Sure Cargo Logistics</small></div>
+                </div>
 
-const particles = Array.from({ length: 60 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  r: Math.random() * 2 + 0.5,
-  dx: (Math.random() - 0.5) * 0.3,
-  dy: (Math.random() - 0.5) * 0.3
-}));
+                <div class="msg-divider-vert"></div>
 
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(255, 215, 0, 0.6)";
-    ctx.fill();
-    p.x += p.dx;
-    p.y += p.dy;
+                <!-- Team wishes -->
+                <div class="msg-col">
+                    <div class="msg-label"><i class="fas fa-users"></i> Team Wishes</div>
+                    <div class="wishes-list">
+                        <div class="wish-item" id="w1">
+                            <div class="wish-sender">Rajesh Kumar · Operations Manager</div>
+                            <div class="wish-text">Your ability to stay calm under pressure and deliver results consistently is truly inspiring. Happy Birthday, Yash!</div>
+                        </div>
+                        <div class="wish-item" id="w2">
+                            <div class="wish-sender">Priya Mehta · Fleet Supervisor</div>
+                            <div class="wish-text">Working alongside you has been a pleasure. Your attention to detail makes every route smoother. Wishing you a wonderful year ahead!</div>
+                        </div>
+                        <div class="wish-item" id="w3">
+                            <div class="wish-sender">Amit Singh · Dispatch Lead</div>
+                            <div class="wish-text">The logistics team wouldn't be the same without you. Here's to more successful deliveries and a fantastic birthday celebration!</div>
+                        </div>
+                        <div class="wish-item" id="w4">
+                            <div class="wish-sender">Sunita Rao · HR Director</div>
+                            <div class="wish-text">You exemplify the values of Sure Cargo — reliability, excellence, and team spirit. Happy Birthday from the entire family!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-  });
-  requestAnimationFrame(animate);
+    <div class="divider"></div>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    Sure Cargo Logistics
+                    <small>Delivering Milestones with Excellence</small>
+                </div>
+                <div class="footer-sep"></div>
+                <div class="footer-copy">
+                    © 2026 Sure Cargo Logistics<br>
+                    All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div><!-- /main-content -->
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── CUSTOM CURSOR ──────────────────────────────────────
+const cursorDot  = document.getElementById('cursorDot');
+const cursorRing = document.getElementById('cursorRing');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function updateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursorDot.style.left  = mx + 'px'; cursorDot.style.top  = my + 'px';
+    cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
+    requestAnimationFrame(updateCursor);
 }
-animate();
-  </script>
+updateCursor();
+document.querySelectorAll('button, a, [data-hover]').forEach(el => {
+    el.addEventListener('mouseenter', () => cursorRing.querySelector('.cursor-ring').style.transform = 'translate(-50%,-50%) scale(1.6)');
+    el.addEventListener('mouseleave', () => cursorRing.querySelector('.cursor-ring').style.transform = 'translate(-50%,-50%) scale(1)');
+});
+
+// ── LOADER ─────────────────────────────────────────────
+const loader = document.getElementById('loader');
+const loaderBar = document.getElementById('loaderBar');
+const loaderLogo = document.querySelector('.loader-logo');
+gsap.to(loaderLogo, { opacity: 1, duration: 0.6, delay: 0.2 });
+setTimeout(() => { loaderBar.style.width = '100%'; }, 100);
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        gsap.to(loader, { opacity: 0, duration: 0.7, delay: 0.4, onComplete: () => loader.style.display = 'none' });
+        gsap.to('#videoContent', { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out', delay: 0.6 });
+        initScratch();
+    }, 800);
+});
+
+// ── PARTICLES ──────────────────────────────────────────
+const pCanvas = document.getElementById('particles');
+const pCtx = pCanvas.getContext('2d');
+function resizeP() { pCanvas.width = innerWidth; pCanvas.height = innerHeight; }
+resizeP();
+window.addEventListener('resize', resizeP);
+
+const pts = Array.from({length: 40}, () => ({
+    x: Math.random() * innerWidth,
+    y: Math.random() * innerHeight,
+    vx: (Math.random() - 0.5) * 0.25,
+    vy: (Math.random() - 0.5) * 0.25,
+    r: Math.random() * 1.5 + 0.5,
+    o: Math.random() * 0.2 + 0.05
+}));
+(function raf() {
+    pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+    pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > pCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > pCanvas.height) p.vy *= -1;
+        pCtx.beginPath();
+        pCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        pCtx.fillStyle = `rgba(201,168,76,${p.o})`;
+        pCtx.fill();
+    });
+    requestAnimationFrame(raf);
+})();
+
+// ── SCROLL ANIMATIONS ──────────────────────────────────
+gsap.to('#profileImg',     { opacity: 1, x: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '#profileImg', start: 'top 75%' } });
+gsap.to('#profileText',    { opacity: 1, x: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '#profileText', start: 'top 75%' } });
+gsap.to('#companyBanner',  { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#companyBanner', start: 'top 80%' } });
+gsap.to('#scratchSection', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '#scratchSection', start: 'top 75%' } });
+gsap.to('#msgSection',     { opacity: 1, y: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '#msgSection', start: 'top 75%' } });
+gsap.to('#footer',         { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: '#footer', start: 'top 90%' } });
+
+// Aside items
+['asi1','asi2','asi3'].forEach((id, i) => {
+    gsap.to(`#${id}`, { opacity: 1, x: 0, duration: 0.7, delay: i * 0.15, ease: 'power2.out', scrollTrigger: { trigger: `#${id}`, start: 'top 85%' } });
+});
+['asi4','asi5','asi6'].forEach((id, i) => {
+    gsap.to(`#${id}`, { opacity: 1, x: 0, duration: 0.7, delay: i * 0.15, ease: 'power2.out', scrollTrigger: { trigger: `#${id}`, start: 'top 85%' } });
+});
+['w1','w2','w3','w4'].forEach((id, i) => {
+    gsap.to(`#${id}`, { opacity: 1, x: 0, duration: 0.6, delay: i * 0.12, ease: 'power2.out', scrollTrigger: { trigger: `#${id}`, start: 'top 85%' } });
+});
+
+// ── REVEAL BTN → scroll to scratch ─────────────────────
+document.getElementById('revealBtn').addEventListener('click', () => {
+    document.getElementById('scratchSection').scrollIntoView({ behavior: 'smooth' });
+});
+
+// ── SCRATCH CARD ───────────────────────────────────────
+const scratchCanvas = document.getElementById('scratchCanvas');
+const ctx = scratchCanvas.getContext('2d');
+const progressFill = document.getElementById('progressFill');
+const progressPct  = document.getElementById('progressPct');
+const scratchHint  = document.getElementById('scratchHint');
+const scratchWrap  = document.getElementById('scratchCard');
+let scratching = false, scratchDone = false, celebDone = false;
+
+function initScratch() {
+    const rect = scratchWrap.getBoundingClientRect();
+    scratchCanvas.width  = rect.width  || 480;
+    scratchCanvas.height = rect.height || 360;
+    const w = scratchCanvas.width, h = scratchCanvas.height;
+
+    ctx.globalCompositeOperation = 'source-over';
+
+    // Gold premium overlay
+    const g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0,   '#b8860b');
+    g.addColorStop(0.3, '#d4a017');
+    g.addColorStop(0.6, '#c9a84c');
+    g.addColorStop(1,   '#a07830');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+
+    // Subtle shimmer grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < w; i += 18) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
+    for (let j = 0; j < h; j += 18) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(w, j); ctx.stroke(); }
+
+    // Diamond pattern
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 1;
+    for (let i = -h; i < w + h; i += 36) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + h, h); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(i + h, 0); ctx.lineTo(i, h); ctx.stroke();
+    }
+
+    // Center text
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.fillRect(w/2 - 160, h/2 - 45, 320, 85);
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.strokeRect(w/2 - 160, h/2 - 45, 320, 85);
+
+    ctx.fillStyle = '#fff';
+    ctx.font = '500 13px "DM Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.letterSpacing = '3px';
+    ctx.fillText('SCRATCH TO REVEAL', w/2, h/2 - 12);
+    ctx.font = '700 22px "Playfair Display", serif';
+    ctx.fillText('Your Birthday Reward', w/2, h/2 + 18);
+}
+
+function getPercent() {
+    const d = ctx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height).data;
+    let t = 0;
+    for (let i = 3; i < d.length; i += 4) if (d[i] === 0) t++;
+    return t / (scratchCanvas.width * scratchCanvas.height);
+}
+
+function doScratch(x, y) {
+    if (scratchDone) return;
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 34, 0, Math.PI * 2);
+    ctx.fill();
+
+    const pct = Math.min(getPercent() / 0.4, 1);
+    progressFill.style.width = (pct * 100) + '%';
+    progressPct.textContent = Math.round(pct * 100) + '%';
+
+    if (pct >= 1) completeScratch();
+}
+
+function completeScratch() {
+    if (scratchDone) return;
+    scratchDone = true;
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+    progressFill.style.width = '100%';
+    progressPct.textContent = '100%';
+    scratchHint.textContent = '✦ Congratulations — Your reward is revealed! ✦';
+    scratchHint.style.color = 'var(--gold)';
+
+    setTimeout(() => {
+        if (!celebDone) { celebDone = true; triggerCelebration(); }
+        gsap.fromTo('#scratchCard', { scale: 1 }, { scale: 1.04, duration: 0.3, yoyo: true, repeat: 3, ease: 'power1.inOut' });
+    }, 200);
+}
+
+// Events
+scratchCanvas.addEventListener('mousedown',  e => { e.preventDefault(); scratching = true; });
+window.addEventListener('mouseup',           ()  => { scratching = false; });
+scratchCanvas.addEventListener('mousemove',  e => {
+    if (!scratching) return;
+    const r = scratchCanvas.getBoundingClientRect();
+    doScratch(e.clientX - r.left, e.clientY - r.top);
+});
+scratchCanvas.addEventListener('touchstart', e => { e.preventDefault(); scratching = true; }, { passive: false });
+scratchCanvas.addEventListener('touchend',   e => { e.preventDefault(); scratching = false; }, { passive: false });
+scratchCanvas.addEventListener('touchmove',  e => {
+    e.preventDefault(); if (!scratching) return;
+    const r = scratchCanvas.getBoundingClientRect(), t = e.touches[0];
+    doScratch(t.clientX - r.left, t.clientY - r.top);
+}, { passive: false });
+
+// ── CELEBRATION ────────────────────────────────────────
+function triggerCelebration() {
+    // Gold & deep confetti
+    const fire = (opts) => confetti({ ...opts, colors: ['#c9a84c','#e8c96b','#f0d890','#8b1a2a','#0a0a0f','#ffffff'] });
+    fire({ particleCount: 80, angle: 60,  spread: 55, origin: { x: 0, y: 0.6 } });
+    setTimeout(() => fire({ particleCount: 80, angle: 120, spread: 55, origin: { x: 1, y: 0.6 } }), 200);
+    setTimeout(() => fire({ particleCount: 60, spread: 80, origin: { x: 0.5, y: 0.3 }, gravity: 0.8 }), 450);
+
+    // Elegant firework
+    launchFirework();
+}
+
+function launchFirework() {
+    const cvs = document.createElement('canvas');
+    cvs.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9991;';
+    document.body.appendChild(cvs);
+    const c = cvs.getContext('2d');
+    cvs.width = innerWidth; cvs.height = innerHeight;
+
+    const palette = ['#c9a84c','#e8c96b','#f0d890','#8b1a2a','#ffffff'];
+    const particles = [];
+
+    for (let b = 0; b < 3; b++) {
+        const bx = innerWidth * (0.25 + 0.25 * b);
+        const by = innerHeight * (0.25 + Math.random() * 0.2);
+        for (let i = 0; i < 45; i++) {
+            const a = (i / 45) * Math.PI * 2;
+            const s = 3 + Math.random() * 4;
+            particles.push({
+                x: bx, y: by,
+                vx: Math.cos(a) * s, vy: Math.sin(a) * s,
+                life: 60, maxLife: 60,
+                size: Math.random() * 3 + 1.5,
+                color: palette[Math.floor(Math.random() * palette.length)],
+                delay: b * 200
+            });
+        }
+    }
+
+    let start = null;
+    function raf(ts) {
+        if (!start) start = ts;
+        c.clearRect(0, 0, cvs.width, cvs.height);
+        let alive = false;
+        particles.forEach(p => {
+            if (ts - start < p.delay) { alive = true; return; }
+            p.x += p.vx; p.y += p.vy;
+            p.vy += 0.04; p.vx *= 0.98; p.life--;
+            if (p.life <= 0) return;
+            alive = true;
+            c.save();
+            c.globalAlpha = p.life / p.maxLife;
+            c.fillStyle = p.color;
+            c.beginPath(); c.arc(p.x, p.y, p.size, 0, Math.PI * 2); c.fill();
+            c.restore();
+        });
+        if (alive) requestAnimationFrame(raf);
+        else document.body.removeChild(cvs);
+    }
+    requestAnimationFrame(raf);
+}
+
+window.addEventListener('resize', () => { if (!scratchDone) initScratch(); });
+</script>
 </body>
 </html>
