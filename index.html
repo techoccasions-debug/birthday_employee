@@ -338,7 +338,7 @@
         .co-message {
             flex: 1;
             font-size: 0.9rem; font-weight: 300;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.929);
             line-height: 1.6;
         }
         .co-badge {
@@ -493,7 +493,7 @@
         .msg-label i { font-size: 0.7rem; }
         .msg-text {
             font-size: 1rem; font-weight: 300;
-            color: rgba(255,255,255,0.65);
+            color: rgba(255, 255, 255, 0.94);
             line-height: 1.9; margin-bottom: 2rem;
         }
         .msg-text p { margin-bottom: 1.2rem; }
@@ -536,7 +536,7 @@
             letter-spacing: 0.05em;
         }
         .wish-text {
-            font-size: 0.875rem; color: rgba(255,255,255,0.6);
+            font-size: 0.875rem; color: rgba(255, 255, 255, 0.916);
             line-height: 1.65;
         }
 
@@ -595,6 +595,33 @@
             .footer-sep { display: none; }
             .footer-copy { text-align: center; }
         }
+
+.owner-photo-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+     overflow: hidden;
+      width: 100%;
+    max-width: 600px;   /* controls max size */
+    height: 600px;
+}
+
+.owner-photo {
+   
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: var(--shadow-xl);
+    transition: 0.4s ease;
+   
+
+}
+
+.owner-photo:hover {
+    transform: scale(1.02);
+}
+
+
     </style>
 </head>
 <body>
@@ -807,36 +834,26 @@
                         <p>At Sure Cargo Logistics, we believe our people are our greatest strength. Your contribution to ensuring seamless coordination and timely deliveries reflects the values we stand for as a company.</p>
                         <p>May this year bring you continued growth, new achievements, and personal fulfillment. We are proud to have you as part of our team and look forward to celebrating many more milestones together.</p>
                     </div>
-                    <div class="msg-sig">— Management Team<small>Sure Cargo Logistics</small></div>
+                    <div class="msg-sig">— Management Team<small><b><h1>Sure Cargo Logistics</h1></b></small></div>
                 </div>
 
                 <div class="msg-divider-vert"></div>
 
                 <!-- Team wishes -->
-                <div class="msg-col">
-                    <div class="msg-label"><i class="fas fa-users"></i> Team Wishes</div>
-                    <div class="wishes-list">
-                        <div class="wish-item" id="w1">
-                            <div class="wish-sender">Rajesh Kumar · Operations Manager</div>
-                            <div class="wish-text">Your ability to stay calm under pressure and deliver results consistently is truly inspiring. Happy Birthday, Yash!</div>
-                        </div>
-                        <div class="wish-item" id="w2">
-                            <div class="wish-sender">Priya Mehta · Fleet Supervisor</div>
-                            <div class="wish-text">Working alongside you has been a pleasure. Your attention to detail makes every route smoother. Wishing you a wonderful year ahead!</div>
-                        </div>
-                        <div class="wish-item" id="w3">
-                            <div class="wish-sender">Amit Singh · Dispatch Lead</div>
-                            <div class="wish-text">The logistics team wouldn't be the same without you. Here's to more successful deliveries and a fantastic birthday celebration!</div>
-                        </div>
-                        <div class="wish-item" id="w4">
-                            <div class="wish-sender">Sunita Rao · HR Director</div>
-                            <div class="wish-text">You exemplify the values of Sure Cargo — reliability, excellence, and team spirit. Happy Birthday from the entire family!</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+ <div class="msg-col">
+    <div class="msg-label">
+        <i class="fas fa-user-tie"></i> Founder & Managing Director
+    </div>
+
+    <div class="owner-photo-wrapper">
+        <img src="owner.jpeg" alt="Company Owner" class="owner-photo">
+    </div>
+</div>
+
+</div> <!-- msg-grid -->
+</div> <!-- container -->
+</section> <!-- msg-section -->
+
 
     <div class="divider"></div>
 
